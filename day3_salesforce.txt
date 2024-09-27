@@ -1,0 +1,185 @@
+
+
+
+
+
+create product object
+enter records in sales app
+and retrieve records using apex programming
+
+
+public class Calculator {
+    // Method to add two numbers
+    public Integer addNumbers(Integer num1, Integer num2) {
+        Integer sum = num1 + num2; // Add the numbers
+        return sum; // Return the result
+    }
+}
+
+-----------------------------------------------------------------
+// Calling the method
+Calculator calc = new Calculator();
+Integer result = calc.addNumbers(10, 20); // result will be 30
+System.debug('Sum of numbers: ' + result);
+public class CLASS1
+{
+public void retrievedata()
+{
+    PROD__c[] p=[select Id,Name,PRICE__C from PROD__c];
+    for(PROD__c products:p)
+    {
+        system.debug('The records are:'+products);
+    }
+}
+}
+
+CLASS1 ob=new CLASS1();
+ob.retrievedata();
+
+------------------------------------------------------------------
+
+public class CLASS2
+{
+public void retrievedata()
+{
+    PROD__c[] p=[select Id,Name,PRICE__C from PROD__c where PRICE__C > 30000];
+    for(PROD__c products:p)
+    {
+        system.debug('The records are:'+products);
+    }
+}
+}
+-------------------------------------------------------------------------
+Public static void updateContact(string name){   
+//method body
+List<Contact> conList = [Select Id,FirstName,LastName from Contact Where LastName =: name];
+       List<contact> listToUpdate = new List<Contact>();
+        for(contact con:conList){
+            con.Title = 'Manager';
+            listToUpdate.add(con);
+ }
+
+------------------------------------------------------------------------
+
+public class StringUtils {
+    public static Boolean isAlpha(String str) {
+        return str != null && str.matches('^[a-zA-Z]+$');
+    }
+
+    public static Boolean isAlphaSpace(String str) {
+        return str != null && str.matches('^[a-zA-Z ]*$');
+    }
+
+    public static Boolean isAlphanumeric(String str) {
+        return str != null && str.matches('^[a-zA-Z0-9]+$');
+    }
+
+    public static Boolean isAlphanumericSpace(String str) {
+        return str != null && str.matches('^[a-zA-Z0-9 ]*$');
+    }
+}
+
+String testString = 'Hello World123';
+System.debug(StringUtils.isAlpha(testString)); // Output: false
+System.debug(StringUtils.isAlphaSpace(testString)); // Output: true
+System.debug(StringUtils.isAlphanumeric(testString)); // Output: false
+System.debug(StringUtils.isAlphanumericSpace(testString)); // Output: true
+
+
+
+-------------------------------------------------------------
+public class StringUtils {
+    public static Boolean isBlank(String str) {
+        return str == null || str.trim().isEmpty();
+    }
+
+    public static Boolean isNotBlank(String str) {
+        return !isBlank(str);
+    }
+}
+
+String emptyString = '  ';
+String nonEmptyString = 'Hello, world!';
+
+System.debug(StringUtils.isBlank(emptyString)); // Output: true
+System.debug(StringUtils.isNotBlank(emptyString)); // Output: false
+System.debug(StringUtils.isBlank(nonEmptyString)); // Output: false
+System.debug(StringUtils.isNotBlank(nonEmptyString)); // Output: true
+--------------------------------------------------------------------------
+
+
+
+public class setter {
+    public string name;
+    public string getname() {
+        return name;
+    }
+    public void Setname(String name) {
+        this.name=name;
+    }      
+}
+
+
+
+<apex:page controller="setter">
+    <apex:form>
+        <apex:outputLabel> Enter name </apex:outputLabel>
+        <apex:inputText value="{!name}"/>
+        <apex:commandButton value="click" reRender="one"/>
+        <div>
+         <apex:outputLabel id="one"> Hello your name is {!name}
+        </apex:outputLabel> 
+        </div>
+    </apex:form>
+</apex:page>
+
+
+-------------------------------------------------------
+
+
+public class Employee {
+    string Employeename;
+    Integer EmployeeNo;
+    Public Employee() {
+        EmployeeName = 'Prasant kumar';
+        EmployeeNo = 1015;
+    }
+    public void Show() {
+        System.debug('Emplyeename is' +EmployeeName);
+        System.debug('EmplyeeNo is' +EmployeeNo);
+    }
+}
+
+----------------------------------------------------------------
+
+public class MySchedule implements schedule {
+    public void execute(ScheduableContext SC) {
+        Account a =new Account(Name='Prasanth');
+        insert a;
+    }
+}
+
+---------------------------------------------------
+<apex:page standardController="Account" recordSetVar="accounts">
+<apex:form >
+<apex:pageBlock >
+<apex:pageBlockTable value="{!Accounts}" var="a">
+<apex:column headerValue="Account Name">
+<apex:outputField value="{!a.name}"/>
+</apex:column>
+</apex:pageBlockTable>
+
+<!-- pagination actions supported by standard list controller -->
+<apex:pageBlockButtons >
+<apex:commandButton value="First" action="{!first}"/>
+<apex:commandButton value="Last" action="{!last}"/>
+<apex:commandButton value="Next" action="{!next}"/>
+<apex:commandButton value="previous" action="{!previous}"/>
+</apex:pageBlockButtons>
+</apex:pageBlock>
+</apex:form>
+</apex:page>
+
+
+-----------------------------------------------------
+
