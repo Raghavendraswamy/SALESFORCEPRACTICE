@@ -1,0 +1,311 @@
+APex class 
+Example
+
+
+public class Employee
+{
+String ename;
+Integer age;
+public Employee()
+{
+ename='abc';
+age=10;
+}
+public void show()
+{
+system.Debug(ename);
+System.Debug(age);
+}
+}
+
+
+public class example
+{
+public Integer show(Integer age)
+{
+System.debug(('my age is ' + age)
+}
+}
+
+example e=new example();
+e.show(25);
+
+
+
+
+
+public class Example {
+String name='scott';
+    public String getName()
+    {
+        return(name);
+        
+    }
+}
+
+
+
+
+
+
+
+visual force page get name
+
+<apex:page controller="Example">
+    <apex:outputLabel >{!name}
+</apex:outputLabel>
+</apex:page>
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------
+
+
+public class Example {
+String name;
+    
+    public Example()
+    {
+        name='Tiger';
+        
+    }
+    public String getName()
+    {
+        return(name);
+        
+    }
+}
+
+
+
+<apex:page controller="Example">
+    <apex:outputLabel >Name:{!name}</apex:outputLabel>
+</apex:page>
+------------------------------------------------------------------------------------
+
+passing values to apex class through visual force page
+and return them
+
+public class Example1 {
+    public String name;
+    public String getName()
+    {
+        return name;
+    }
+    
+    public void SetName(String name)
+    {
+        this.name=name;
+    }
+
+}
+
+
+
+<apex:page controller="Example1">
+    <apex:form>
+    <apex:outputLabel>EnterName</apex:outputLabel>
+      <apex:inputText  value='{!name}'/>
+      <apex:commandButton  value="click" reRender="one" />
+      <apex:outputLabel id="one"> your name is {!name} </apex:outputLabel>
+        
+    </apex:form>
+
+</apex:page>
+
+
+
+--------------------------------------------------------------------------------------------------
+
+ activation of method in visual force page
+
+public class Example2 {
+    public String name;
+    public String getName()
+    {
+        return name;
+    }
+    
+    public void SetName(String name)
+    {
+        this.name=name;
+    }
+
+    public pageReference show()
+    {
+        name= 'This is my name' + name;
+        return null;
+    }
+}
+
+
+
+
+<apex:page controller="Example2">
+    <apex:form>
+    <apex:outputLabel>EnterName</apex:outputLabel>
+        <apex:inputText  value="{!name}"/>
+        <apex:commandButton  value="click" reRender="one"  action="{!show}"/>
+        <apex:outputLabel id="one"> your name is {!name} </apex:outputLabel>
+        
+    </apex:form>
+
+</apex:page>
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+public class ArrayExample {
+    public Account[] myval{get; set;}
+    public string name{get; set;}
+    public String Industry{get; set;}
+    public ArrayExample()
+    {
+        Account a1=new Account(name='abc',Industry='Banking');
+         Account a2=new Account(name='syam',Industry='Banking');
+         Account a3=new Account(name='jack',Industry='Banking');
+        myval=new Account[]{a1,a2,a3};
+        
+    }
+}
+
+
+<apex:page controller="ArrayExample">
+    <apex:form>
+        <apex:pageBlock>
+          <apex:pageBlockTable value="{!myval}" var="a">
+              <apex:column value="{!a.name}"/>
+               <apex:column value="{!a.industry}"/>
+              
+            </apex:pageBlockTable>
+            <apex:outputLabel>{!name}</apex:outputLabel>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page> 
+
+
+---------------------------------------------------------------------------------------------------------
+pick list example apex code
+----------------------------------------------------------------------------------------------------------
+
+
+
+
+Account[] accts = [SELECT Name,Phone FROM Account 
+                                      ORDER BY Name  LIMIT 10];
+System.debug(accts.size() + ' account(s) returned.');
+// Write all account array info
+System.debug(accts);
+
+-----------------------------------------------------------------------------------------------------
+
+public class ContactAndLeadSearch {
+    public static List<List<sObject>> searchContactsAndLeads(String LastName)
+    {
+        List<List<sObject>> ContactLeadList=[Find :lastName IN ALL FIELDS
+                                            RETURNING Contact(Name),Lead(Name)];
+        
+        return ContactLeadList;
+    }
+
+}
+
+public class ContactAndLeadSearch {
+    public static List<List<sObject>> searchContactsAndLeads(String LastName)
+    {
+        List<List<sObject>> ContactLeadList=[Find :lastName IN ALL FIELDS
+                                            RETURNING Contact(Name),Lead(Name)];
+        
+        return ContactLeadList;
+    }
+
+}
+
+-----------------------------------------------------------------------------------------------
+
+
+public class ContactSearch {
+    public static List<Contact> searchForContacts(String lastName,String postalCode)
+    {
+        List<Contact> Contacts=[Select Id,Name from Contact where LastName=: lastName and
+                               MailingPostalCode=: postalCode];
+        return Contacts;
+        
+    }
+
+}
+
+
+------------------------------------------------------------------------
+
+
+trigger HelloWorldTrigger on Account (before insert) {
+	System.debug('Hello World!');
+}
+
+Account a = new Account(Name='Test Trigger');
+insert a;
+
+-----------------------------------------------------------------------------
+
+
+trigger AccountAddressTrigger on Account (before insert) {
+ for(Account a: Trigger.New)
+ {
+     if(a.Match_Billing_Address__c == true && a.BillingPostalCode != null)
+     {
+         a.ShippingPostalCode=a.BillingPostalCode;
+     }
+ }
+
+}
+
+
+-------------------------------------------------------------------------------------
+
+trigger ClosedOpportunityTrigger on Opportunity (after insert, after update) {
+
+    List<Task> taskList = new List<Task>();
+    
+    for(Opportunity opp : Trigger.new) {
+        
+        if(Trigger.isInsert) {
+            if(Opp.StageName == 'Closed Won') {
+                taskList.add(new Task(Subject = 'Follow Up Test Task', WhatId = opp.Id));
+            }
+        }
+        
+        if(Trigger.isUpdate) {
+            if(Opp.StageName == 'Closed Won' && Opp.StageName != Trigger.oldMap.get(opp.Id).StageName) {
+                taskList.add(new Task(Subject = 'Follow Up Test Task', WhatId = opp.Id));
+            }
+        }       
+    }
+
+    if(taskList.size()>0) {        
+        insert taskList;        
+    }    
+}
+
+
+
+
+AND(
+NOT( ISBLANK( Account.Id )) ,
+MailingPostalCode <> Account.ShippingPostalCode )
+
+
+
+
+
+
+
+
+
+
+
+
