@@ -1,0 +1,44 @@
+<template>
+    <lightning-combobox
+        name="accounts"
+        label="Select Account"
+        value={selectedAccount}
+        options={accountOptions}
+        onchange={handleAccountChange}
+    ></lightning-combobox>
+    
+    <template if:true={selectedAccountName}>
+        <p>Selected Account: {selectedAccountName}</p>
+    </template>
+</template>
+-------------------------------------------------
+import { LightningElement, wire, track } from 'lwc';
+import getAccounts from '@salesforce/apex/AccountController.getAccounts';
+
+export default class AccountDropdown extends LightningElement {
+    @track accountOptions = [];
+    @track selectedAccount;
+    @track selectedAccountName;
+
+    @wire(getAccounts)
+    wiredAccounts({ error, data }) {
+        if (data) {
+            this.accountOptions = data.map(account => {
+                return { label: account.Name, value: account.Id };
+            });
+        } else if (error) {
+            console.error(error);
+        }
+    }
+--------------------------------------------------------
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata" fqn="accountDropdown">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__HomePage</target>
+    </targets>
+</LightningComponentBundle>
+

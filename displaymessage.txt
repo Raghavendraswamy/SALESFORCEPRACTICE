@@ -1,0 +1,28 @@
+<template>
+    <div>
+        <lightning-input label="Enter something" value={inputValue} onchange={handleInputChange}></lightning-input>
+        <p>You entered: {inputValue}</p>
+    </div>
+</template>
+-----------------------------------------------------
+import { LightningElement, track } from 'lwc';
+
+export default class displaymsg extends LightningElement {
+    @track inputValue = '';
+
+    handleInputChange(event) {
+        this.inputValue = event.target.value;
+    }
+}
+
+---------------------------------------------------------
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata" fqn="msg">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+    <target>lightning__AppPage</target>
+    <target>lightning__RecordPage</target>
+    <target>lightning__HomePage</target>
+    </targets>
+</LightningComponentBundle>
